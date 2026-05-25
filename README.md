@@ -87,7 +87,7 @@ paru -S hyprland xorg-xwayland xdg-desktop-portal-hyprland hyprland-qt-support a
 ```bash
 git clone https://github.com/Parviz-sudo/dotfiles
 cd dotfiles
-cp -r .config/* ~/.config
+cp -r config/* ~/.config
 cp -r TokyoNight.colors ~/.local/share/color-schemes
 ```
 
