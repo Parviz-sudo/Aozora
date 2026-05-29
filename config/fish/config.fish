@@ -1,165 +1,289 @@
+# ============================================================================
+#  ___ ___ ___ _  _    ___  ___  _  _ ___ ___ ___
+# | __|_ _/ __| || |  / __|/ _ \| \| | __|_ _/ __|
+# | _| | |\__ \ __ | | (__| (_) | .` | _| | | (_ |
+# |_| |___|___/_||_|  \___|\___/|_|\_|_| |___\___|
+# ============================================================================
+
 if status is-interactive
     # Commands to run in interactive sessions can go here
-
-    # Getting rid of fish's greeting
     set -g fish_greeting
-
-    # Use starship
-    function starship_transient_prompt_func
-        starship module character
-    end
-    if test "$TERM" != "linux"
-        starship init fish | source
-        enable_transience
-    end
+    starship init fish | source
 end
 
-# Format man pages
+
+# ============================================================================
+# ENVIRONMENT
+# ============================================================================
+
+# Man pages
 set -x MANROFFOPT "-c"
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
-# Set settings for https://github.com/franciscolourenco/done
+# Editor
+set -x EDITOR nvim
+set -x VISUAL nvim
+
+# PATH
+fish_add_path ~/.local/bin
+fish_add_path ~/.cargo/bin
+fish_add_path ~/go/bin
+fish_add_path ~/.spicetify
+
+# ============================================================================
+# PLUGINS (done notification)
+# ============================================================================
+
 set -U __done_min_cmd_duration 10000
 set -U __done_notification_urgency_level low
 
-## Environment setup
-# Apply .profile: use this to put fish compatible .profile stuff in
-if test -f ~/.fish_profile
-  source ~/.fish_profile
-end
+# ============================================================================
+# ZOXIDE
+# ============================================================================
 
-# Append common directories for executable files to $PATH
-fish_add_path ~/.local/bin ~/.cargo/bin ~/go/bin ~/flutter/bin
-
-function __history_previous_command_arguments
-  switch (commandline -t)
-  case "!"
-    commandline -t ""
-    commandline -f history-token-search-backward
-  case "*"
-    commandline -i '$'
-  end
-end
-
-if [ "$fish_key_bindings" = fish_vi_key_bindings ];
-  bind -Minsert ! __history_previous_command
-  bind -Minsert '$' __history_previous_command_arguments
-else
-  bind ! __history_previous_command
-  bind '$' __history_previous_command_arguments
-end
-
-# Fish command history
-function history
-    builtin history --show-time='%F %T ' $argv
-end
-
-# updating the operating system
-function update
-    echo "📦 updating..."
-    sudo pacman -Syu
-    if command -sq yay
-        yay -Sua --noconfirm
-    else if command -sq paru
-        paru -Sua --noconfirm
-    end
-end
-
-# make directory and chnage to it
-function mkcd
-    mkdir -p $argv[1]; and cd $argv[1]
-end
-
-# extract file
-function extract
-    if test -f $argv[1]
-        switch $argv[1]
-            case '*.tar.bz2';  tar xjf $argv[1]
-            case '*.tar.gz';   tar xzf $argv[1]
-            case '*.tar.xz';   tar xJf $argv[1]
-            case '*.tar';      tar xf  $argv[1]
-            case '*.bz2';      bunzip2 $argv[1]
-            case '*.gz';       gunzip  $argv[1]
-            case '*.zip';      unzip   $argv[1]
-            case '*.rar';      unrar x $argv[1]
-            case '*.7z';       7z x    $argv[1]
-        end
-    else
-        echo ": file notfound$argv[1]"
-    end
-end
-
-# creating a backup
-function backup
-    cp -r $argv[1] "$argv[1].bak.(date +%Y%m%d_%H%M%S)"
-    echo "✅ creat backup"
-end
-
-# activate zoxide
 if command -sq zoxide
     zoxide init fish | source
     alias cd='z'
+    alias cdi='zi'   # interactive با fzf
 end
 
-# Copy DIR1 DIR2
+# ============================================================================
+# ALIASES
+# ============================================================================
+
+# eza
+if command -sq eza
+    alias ls='eza -al --color=always --group-directories-first --icons=always'
+    alias la='eza -a  --color=always --group-directories-first --icons=always'
+    alias ll='eza -l  --color=always --group-directories-first --icons=always'
+    alias lt='eza -aT --color=always --group-directories-first --icons=always --level=2'
+    alias l.='eza -a  --color=always --group-directories-first --icons=always | grep -e "^\."'
+    alias tree='eza --tree --color=always --icons=always'
+else
+    alias ls='ls --color=auto'
+    alias la='ls -A --color=auto'
+    alias ll='ls -lh --color=auto'
+end
+
+# bat
+if command -sq bat
+    alias cat='bat --paging=never'
+    alias catp='bat'
+end
+
+# ripgrep
+if command -sq rg
+    alias rg='rg --smart-case'
+end
+
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -Iv'
+alias mkdir='mkdir -pv'
+alias df='df -h'
+alias du='du -sh'
+alias dus='du -sh * | sort -h'
+alias free='free -h'
+
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+alias dir='dir --color=auto'
+alias vdir='vdir --color=auto'
+
+alias wget='wget -c'
+alias curl='curl -L'
+
+alias psmem='ps auxf | sort -nr -k 4'
+alias psmem10='ps auxf | sort -nr -k 4 | head -10'
+alias hw='hwinfo --short'
+
+# Arch
+alias big="expac -H M '%m\t%n' | sort -h | nl"
+alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'
+alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
+alias jctl="journalctl -p 3 -xb"
+alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+alias archwiki="python -m http.server 8000 --directory /usr/share/doc/arch-wiki/html"
+
+alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
+alias tarnow='tar -acf'
+alias untar='tar -zxvf'
+
+# ============================================================================
+# ALIASES — git
+# ============================================================================
+
+alias g='git'
+alias gs='git status -sb'
+alias ga='git add'
+alias gaa='git add .'
+alias gc='git commit -m'
+alias gca='git commit --amend'
+alias gp='git push'
+alias gpl='git pull'
+alias gl='git log --oneline --graph --decorate --all'
+alias gd='git diff'
+alias gco='git checkout'
+alias gb='git branch'
+alias gst='git stash'
+alias gsp='git stash pop'
+
+# ============================================================================
+# ALIASES — shortcuts
+# ============================================================================
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias q='exit'
+alias c='clear'
+alias h='history'
+alias j='jobs -l'
+alias v='$EDITOR'
+alias vim='nvim'
+# kitty config
+alias kconf='$EDITOR ~/.config/kitty/kitty.conf'
+alias fconf='$EDITOR ~/.config/fish/config.fish'
+
+# ============================================================================
+# FUNCTIONS
+# ============================================================================
+
+function update
+    echo "📦 Updating pacman..."
+    sudo pacman -Syu
+    if command -sq paru
+        echo "📦 Updating AUR (paru)..."
+        paru -Sua --noconfirm
+    end
+    echo "✅ All done!"
+end
+
+# ============================================================================
+# FUNCTIONS — فایل و دایرکتوری
+# ============================================================================
+
+# mkdir + cd
+function mkcd
+    mkdir -p $argv[1] && cd $argv[1]
+end
+
+# backup
+function backup
+    set timestamp (date +%Y%m%d_%H%M%S)
+    cp -r $argv[1] "$argv[1].bak.$timestamp"
+    echo "✅ Backup: $argv[1].bak.$timestamp"
+end
+
+# extract
+function extract
+    if not test -f $argv[1]
+        echo "❌ File not found: $argv[1]"
+        return 1
+    end
+    switch $argv[1]
+        case '*.tar.bz2'; tar xjf $argv[1]
+        case '*.tar.gz';  tar xzf $argv[1]
+        case '*.tar.xz';  tar xJf $argv[1]
+        case '*.tar.zst'; tar --zstd -xf $argv[1]
+        case '*.tar';     tar xf  $argv[1]
+        case '*.bz2';     bunzip2 $argv[1]
+        case '*.gz';      gunzip  $argv[1]
+        case '*.zip';     unzip   $argv[1]
+        case '*.rar';     unrar x $argv[1]
+        case '*.7z';      7z x    $argv[1]
+        case '*.zst';     unzstd  $argv[1]
+        case '*'
+            echo "❓ Unknown format: $argv[1]"
+            return 1
+    end
+    echo "✅ Extracted: $argv[1]"
+end
+
+# copy
 function copy
-    set count (count $argv | tr -d \n)
-    if test "$count" = 2; and test -d "$argv[1]"
-        set from (echo $argv[1] | trim-right /)
-        set to (echo $argv[2])
-        command cp -r $from $to
+    if test (count $argv) -eq 2; and test -d $argv[1]
+        command cp -r $argv[1] $argv[2]
     else
         command cp $argv
     end
 end
 
-## Useful aliases
-# Replace ls with eza
-alias ls='eza -al --color=always --group-directories-first --icons=always' # preferred listing
-alias la='eza -a --color=always --group-directories-first --icons=always'  # all files and dirs
-alias ll='eza -l --color=always --group-directories-first --icons=always'  # long format
-alias lt='eza -aT --color=always --group-directories-first --icons=always' # tree listing
-alias l.="eza -a | grep -e '^\.'"                                     # show only dotfiles
+# ============================================================================
+# FUNCTIONS — git
+# ============================================================================
 
-# Replace cat with bat
-alias cat='bat'
+# init + fisrt commit
+function ginit
+    git init
+    git add .
+    git commit -m "🎉 Initial commit"
+end
 
-# kitty doesn't clear properly so we need to do this weird printing
-alias clear "printf '\033[2J\033[3J\033[1;1H'"
-alias celar "printf '\033[2J\033[3J\033[1;1H'"
-alias claer "printf '\033[2J\033[3J\033[1;1H'"
+# clone + cd
+function gclone
+    git clone $argv[1] && cd (basename $argv[1] .git)
+end
 
-# Common use
-alias cp='cp -iv'
-alias mv='mv -iv'
-alias df='df -h'
-alias du='du -sh'
-alias dus='du -sh * | sort -h'
-alias rg='rg --smart-case'
-alias grubup="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
-alias tarnow='tar -acf '
-alias untar='tar -zxvf '
-alias wget='wget -c '
-alias psmem='ps auxf | sort -nr -k 4'
-alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-alias dir='dir --color=auto'
-alias vdir='vdir --color=auto'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias hw='hwinfo --short'                                   # Hardware Info
-alias big="expac -H M '%m\t%n' | sort -h | nl"              # Sort installed packages according to size in MB
-alias gitpkg='pacman -Q | grep -i "\-git" | wc -l'          # List amount of -git packages
+# ============================================================================
+# FUNCTIONS - network
+# ============================================================================
 
-# Cleanup orphaned packages
-alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
+function myip
+    curl -s https://ifconfig.me
+    echo
+end
 
-# Get the error messages from journalctl
-alias jctl="journalctl -p 3 -xb"
+function speedtest
+    curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -
+end
 
-# Recent installed packages
-alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+# ============================================================================
+# FUNCTIONS — history search
+# ============================================================================
 
-# Arch Wiki
-alias archwiki="python -m http.server 8000 --directory /usr/share/doc/arch-wiki/html"
+function __history_previous_command_arguments
+    switch (commandline -t)
+        case "!"
+            commandline -t ""
+            commandline -f history-token-search-backward
+        case "*"
+            commandline -i '$'
+    end
+end
+
+bind ! __history_previous_command_arguments
+
+# ============================================================================
+# FUNCTIONS — history
+# ============================================================================
+
+function history
+    builtin history --show-time='%F %T ' $argv
+end
+
+# ============================================================================
+# KEY BINDINGS
+# ============================================================================
+
+# Ctrl+R
+if command -sq fzf
+    function fzf_history
+        set cmd (builtin history --show-time='[%F %T] ' | fzf --tac --no-sort --height=40% --border --prompt="History ❯ " | string replace -r '^\[.*?\] ' '')
+        if test -n "$cmd"
+            commandline $cmd
+        end
+    end
+    bind \cr fzf_history
+
+    # Ctrl+F
+    function fzf_file
+        set file (fzf --height=40% --border --prompt="File ❯ ")
+        if test -n "$file"
+            commandline -i $file
+        end
+    end
+    bind \cf fzf_file
+end
