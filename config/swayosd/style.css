@@ -1,7 +1,8 @@
 * {
 all: unset;
-font-family: "JetBrainsMono Nerd Font";
-font-size: 14px;
+font-family: "CaskaydiaCove Nerd Font";
+font-size: 1.1rem;
+transition: 0.2s;
 }
 
 @define-color bg        rgba(26, 27, 38, 0.88);

@@ -8,6 +8,7 @@ require("modules.layout")
 require("modules.misc")
 require("modules.input")
 require("modules.windowrules")
+require("modules.gestures")
 
 -- Ref https://wiki.hypr.land/Configuring/Basics/Workspace-Rules/
 -- "Smart gaps" / "No gaps when only"

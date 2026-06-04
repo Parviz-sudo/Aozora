@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+	<action>
+	<icon>utilities-terminal</icon>
+<name>Open Terminal Here</name>
+<submenu></submenu>
+<unique-id>1720621850636761-1</unique-id>
+<command>alacritty --working-directory %f</command>
+<description>Example for a custom action</description>
+<range></range>
+<patterns>*</patterns>
+<startup-notify/>
+<directories/>
+</action>
+<action>
+	<icon>vscodium</icon>
+<name>Open in codium</name>
+<submenu></submenu>
+<unique-id>1735781946752596-1</unique-id>
+<command>codium -n %f</command>
+<description>Opens provided dierctory in vscodium</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<text-files/>
+</action>
+<action>
+	<icon>preferences-desktop-wallpaper</icon>
+<name>Set as wallpaper</name>
+<submenu></submenu>
+<unique-id>1722348939040143-1</unique-id>
+<command>python3 ~/.local/bin/auto_walls set %f</command>
+<description>sets picture as wallpaper</description>
+<range>*</range>
+<patterns>*</patterns>
+<image-files/>
+</action>
+<action>
+	<icon>ffmpeg</icon>
+<name>Reduce quality</name>
+<submenu></submenu>
+<unique-id>1758511085564080-3</unique-id>
+<command>ffmpeg -i %f -c:v libx264 -preset medium -crf 24 -pix_fmt yuv420p -c:a aac -b:a 96k -movflags +faststart %d/reduced-%n</command>
+<description>Reduce video quality</description>
+<range>*</range>
+<patterns>*</patterns>
+<video-files/>
+</action>
+<action>
+	<icon>pgp-keys</icon>
+<name>Open as root</name>
+<submenu></submenu>
+<unique-id>1721171915130704-1</unique-id>
+<command>thunar admin://%f</command>
+<description>Opens thunar as root</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+</action>
+<action>
+	<icon>clipboard</icon>
+<name>Copy path</name>
+<submenu></submenu>
+<unique-id>1730572291852956-2</unique-id>
+<command>wl-copy %f ; notify-send &quot;Copied to Clipboard&quot; %f -i clipboard</command>
+<description>Copy current selected file&apos;s directory (with name) to the clipboard</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+<action>
+	<icon>link</icon>
+<name>Create symlink</name>
+<submenu></submenu>
+<unique-id>1758831930937907-1</unique-id>
+<command>ln -s %f Link\ to\ %n</command>
+<description>Creates new symbolic link to selected item</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+<action>
+	<icon>format-text-smaller</icon>
+<name>snake_ case</name>
+<submenu>Change Case</submenu>
+<unique-id>1765940212176490-1</unique-id>
+<command>~/.local/bin/scase -f %f</command>
+<description>Rename file to snake cased name</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+<action>
+	<icon>format-text-smaller</icon>
+<name>kebab-case</name>
+<submenu>Change Case</submenu>
+<unique-id>1777649251663823-2</unique-id>
+<command>~/.local/bin/scase -f %f -c kebab</command>
+<description>Rename file to kebab cased name</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+<action>
+	<icon>format-text-smaller</icon>
+<name>camelCase</name>
+<submenu>Change Case</submenu>
+<unique-id>1777649285826995-3</unique-id>
+<command>~/.local/bin/scase -f %f -c camel</command>
+<description>Rename file to camel cased name</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+<action>
+	<icon>format-text-smaller</icon>
+<name>space case</name>
+<submenu>Change Case</submenu>
+<unique-id>1777649312323907-4</unique-id>
+<command>~/.local/bin/scase -f %f -c space</command>
+<description>Rename file to usual case</description>
+<range>*</range>
+<patterns>*</patterns>
+<directories/>
+<audio-files/>
+<image-files/>
+<other-files/>
+<text-files/>
+<video-files/>
+</action>
+</actions>

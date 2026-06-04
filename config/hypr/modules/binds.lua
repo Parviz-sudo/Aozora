@@ -85,3 +85,12 @@ for i = 1, 10 do
     hl.bind(mainMod .. " + SHIFT + UP", hl.dsp.exec_cmd("swayosd-client --input-volume raise"))
     hl.bind(mainMod .. " + SHIFT + DOWN", hl.dsp.exec_cmd("swayosd-client --input-volume lower"))
     hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("swayosd-client --input-volume mute-toggle"))
+    
+    --minimize
+    hl.bind("SUPER + X", function ()
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "+0"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+    hl.dispatch(hl.dsp.window.move({workspace = "special:minimize"}))
+    hl.dispatch(hl.dsp.workspace.toggle_special("minimize"))
+end)

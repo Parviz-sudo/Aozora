@@ -1,30 +1,99 @@
 {
-  "positionX": "right",
-  "positionY": "top",
-  "layer": "overlay",
-  "control-center-layer": "top",
-  "layer-shell": true,
-  "cssPriority": "application",
-  "control-center-margin-top": 10,
-  "control-center-margin-bottom": 10,
-  "control-center-margin-right": 10,
-  "control-center-margin-left": 10,
-  "notification-2fa-action": true,
-  "notification-inline-replies": false,
-  "notification-icon-size": 64,
-  "notification-body-image-height": 100,
-  "notification-body-image-width": 200,
-  "timeout": 10,
-  "timeout-low": 5,
-  "timeout-critical": 0,
-  "fit-to-screen": true,
-  "control-center-width": 500,
-  "control-center-height": 600,
-  "notification-window-width": 500,
-  "keyboard-shortcuts": true,
-  "image-visibility": "when-available",
-  "transition-time": 200,
-  "hide-on-clear": false,
-  "hide-on-action": true,
-  "script-fail-notify": false
-}
+    "$schema": "/etc/xdg/swaync/configschema.json",
+    "positionX": "right",
+    "positionY": "top",
+    "cssPriority": "user",
+    "control-center-width": 450,
+    "fit-to-screen": true,
+
+    "notification-window-width": 400,
+    "notification-icon-size": 40,
+    "notification-body-image-height": 500,
+    "notification-body-image-width": 500,
+    "notification-inline-replies": true,
+    "notification-2fa-action": false,
+
+    "timeout": 3,
+    "timeout-low": 2,
+    "timeout-critical": 6,
+
+    "keyboard-shortcuts": true,
+    "image-visibility": "when-available",
+    "transition-time": 200,
+    "hide-on-clear": false,
+    "hide-on-action": false,
+    "script-fail-notify": true,
+
+    "widgets": [
+      "mpris",
+      "dnd",
+      "notifications",
+      "buttons-grid"
+    ],
+
+    "widget-config": {
+        "backlight": {
+            "device": "amdgpu_bl1",
+            "label": "󰃠",
+            "slider": true,
+            "min": 10
+        },
+        "volume": {
+            "device": "default",
+            "label": "",
+            "slider": true
+        },
+
+        "dnd": {
+            "text": "Do not disturb"
+        },
+
+        "mpris": {
+            "image-size": 100,
+            "image-radius": 10,
+            "autohide": false,
+            "blacklist": [ "org.mpris.MediaPlayer2.playerctld"]
+        },
+
+        "buttons-grid": {
+            "actions": [
+                {
+                    "label": "󰌪",
+                    "type": "toggle",
+                    "command": "bash -c '$HOME/.local/bin/powerprofile --toggle-quiet'",
+                    "update-command": "bash -c '$HOME/.local/bin/powerprofile --is-quiet'"
+                },
+                {
+                    "label": "",
+                    "type": "toggle",
+                    "command": "bash -c '$HOME/.local/bin/caffeine'",
+                    "update-command": "bash -c '$HOME/.local/bin/caffeine --is-running'"
+                },
+                {
+                    "label": "",
+                    "type": "toggle",
+                    "command": "bash -c '$HOME/.local/bin/mictoggle --silent'",
+                    "update-command": "bash -c '$HOME/.local/bin/mictoggle --is-muted'"
+                },
+                {
+                    "label": "",
+                    "command": "hyprctl dispatch exec alacritty -- -e htop ; swaync-client -cp"
+                },
+                {
+                    "label": "󰃟",
+                    "type": "toggle",
+                    "command": "bash -c '$HOME/.local/bin/themesw'",
+                    "update-command": "bash -c '[ $($HOME/.local/bin/themesw --current) = light ] && echo true || echo false'"
+                },
+                {
+                    "label": "",
+                    "command": "hyprctl dispatch exec nwg-look ; swaync-client -cp"
+                },
+                {
+                    "label": "",
+                    "command": "swaync-client -cp ; bash -c $HOME/.config/rofi/bin/logout"
+                }
+            ]
+        }
+    }
+  }
