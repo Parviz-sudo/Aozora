@@ -79,7 +79,7 @@ All configs live in `~/.config/`:
 **Arch / Arch Based Distros:**
 
 ```bash
-paru -S hyprland fish starship kitty cava fastfetch xorg-xwayland xdg-desktop-portal-hyprland hyprland-qt-support awww wofi waybar polkit-kde-agent xdg-desktop-portal qt5ct qt6ct nwg-look hypridle hyprlock swaync hyprshot blueman swayosd network-manager-applet wlogout thunar light cliphist wl-clipboard hyprqt6engine qt6-wayland qt5-wayland ttf-jetbrains-mono-nerd
+paru -S hyprland fish starship kitty cava fastfetch xorg-xwayland xdg-desktop-portal-hyprland hyprland-qt-support awww wofi waybar polkit-kde-agent xdg-desktop-portal qt5ct qt6ct nwg-look hypridle hyprlock swaync hyprshot blueman swayosd network-manager-applet wlogout thunar light cliphist wl-clipboard hyprqt6engine qt6-wayland qt5-wayland ttf-jetbrains-mono-nerd ttf-cascadia-code ttf-cascadia-code-nerd ttf-cascadia-mono-nerd
 ```
 
 ### 2. Clone or copy your dotfiles
