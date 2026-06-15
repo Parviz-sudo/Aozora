@@ -2,7 +2,7 @@
 
 Welcome to my personal Parch Linux (Arch Based) dotfiles repo!
 A minimal, keyboard‑driven Hyprland configuration.
-![screenshot](wm.png)
+![screenshot](wm.jpg)
 
 I use [Parch Linux](https://parchlinux.com/en) (BTW)
 
